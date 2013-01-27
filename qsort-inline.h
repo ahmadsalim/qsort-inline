@@ -114,9 +114,9 @@ swapfunc(char *a, char *b, int n, int swaptype)
 static inline char * \
 MED3(T, CMP) (char *a, char *b, char *c) \
 { \
-    return CMP(a, b) < 0 ?\
-    (CMP(b, c) < 0 ? b : (CMP(a, c) < 0 ? c : a )) \
-    :(CMP(b, c) > 0 ? b : (CMP(a, c) < 0 ? a : c )); \
+    return CMP((T*)a, (T*)b) < 0 ?\
+    (CMP((T*)b, (T*)c) < 0 ? b : (CMP((T*)a, (T*)c) < 0 ? c : a )) \
+    :(CMP((T*)b, (T*)c) > 0 ? b : (CMP((T*)a, (T*)c) < 0 ? a : c )); \
 } \
 void QSORT(T,CMP) (T *a, size_t n)      \
 {                              \
@@ -129,7 +129,7 @@ loop:  SWAPINIT(a, es);        \
   swap_cnt = 0;                \
   if (n < 7) {                 \
     for (pm = (char *)a + es; pm < (char*)a + n * es; pm += es) \
-      for (pl = pm; pl > (char*)a && CMP(pl - es, pl) > 0; \
+      for (pl = pm; pl > (char*)a && CMP((T*)(pl - es), (T*)pl) > 0; \
            pl -= es)           \
         swap_(pl, pl - es);     \
     return;                    \
@@ -151,7 +151,7 @@ loop:  SWAPINIT(a, es);        \
     \
   pc = pd = (char*)a + (n - 1) * es; \
   for (;;) { \
-    while (pb <= pc && (r = CMP(pb, a)) <= 0) { \
+    while (pb <= pc && (r = CMP((T*)pb, (T*)a)) <= 0) { \
       if (r == 0) { \
         swap_cnt = 1; \
         swap_(pa, pb); \
@@ -159,7 +159,7 @@ loop:  SWAPINIT(a, es);        \
       } \
       pb += es; \
     } \
-    while (pb <= pc && (r = CMP(pc, a)) >= 0) { \
+    while (pb <= pc && (r = CMP((T*)pc, (T*)a)) >= 0) { \
       if (r == 0) { \
         swap_cnt = 1; \
         swap_(pc, pd); \
@@ -176,7 +176,7 @@ loop:  SWAPINIT(a, es);        \
   } \
   if (swap_cnt == 0) {  /* Switch to insertion sort */ \
     for (pm = (char*)a + es; pm < (char*)a + n * es; pm += es) \
-      for (pl = pm; pl > (char*)a && CMP(pl - es, pl) > 0; \
+      for (pl = pm; pl > (char*)a && CMP((T*)(pl - es), (T*)pl) > 0; \
            pl -= es) \
         swap_(pl, pl - es); \
     return; \
