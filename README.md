@@ -49,7 +49,7 @@ void delete_person(Person p) {
 }
 
 //Define comparator as usual (Though notice that it is typesafe. This will sort by age, then by name.)
-int Personcmp(Person * pa, Person * pb) {
+inline int Personcmp(Person * pa, Person * pb) {
   int agecmp = (*pa)->age - (*pb)->age;
   if (!agecmp) {
     return strcmp((*pa)->name, (*pb)->name);
