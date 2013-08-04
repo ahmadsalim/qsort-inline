@@ -15,3 +15,6 @@
 *.exe
 *.out
 *.app
+benchmark_cinline
+benchmark_cpp
+benchmark_c
